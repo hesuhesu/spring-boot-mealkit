@@ -1,10 +1,10 @@
 # 아키텍처
 
-ctl_backend 에서 가져온 골격과, 스타터에서 의도적으로 줄인 부분을 정리한다.
+패키지·보안·회원 저장소·확장 절차를 정리한다.
 
 ## 한눈에
 
-> Cursor 미리보기는 SVG 임베드를 막는다. 파일: [architecture-layers.svg](assets/architecture-layers.svg)
+![레이어](assets/architecture-layers.svg)
 
 ```mermaid
 flowchart TB
@@ -13,7 +13,7 @@ flowchart TB
   ST[MemberStore]
   J[JwtTokenProvider / Filter]
   R[DefaultRes + GlobalExceptionHandler]
-  FE[vite-ts-mealkit]
+  FE[Frontend]
 
   C --> S
   S --> ST
@@ -34,7 +34,7 @@ com.mealkit
   member/          GET /api/my
 ```
 
-도메인이 늘면 ctl 처럼 `com.mealkit.{domain}.{controller|service|mapper|dto}` 로 확장한다.
+도메인이 늘면 `com.mealkit.{domain}.{controller|service|mapper|dto}` 로 확장한다.
 
 ## 응답 계약
 
@@ -50,7 +50,7 @@ com.mealkit
 
 ## 보안
 
-파일: [architecture-auth-flow.svg](assets/architecture-auth-flow.svg)
+![인증](assets/architecture-auth-flow.svg)
 
 | 항목 | 내용 |
 | --- | --- |
@@ -76,20 +76,17 @@ AuthService → MemberStore
 | `mariadb` | MariaDB + 동일 Store | `application-mariadb.yml` |
 | `inmemory` | `InMemoryMemberStore` | `application-inmemory.yml` (JDBC/MyBatis exclude) |
 
-`AuthService` 는 포트만 의존 — 구현 교체 시 서비스 수정 불필요.  
-소스 주석: `MemberStore`, `MyBatisMemberStore`, `InMemoryMemberStore`, `Member.xml`.
+`AuthService` 는 포트만 의존한다. 구현 교체 시 서비스 수정은 필요 없다.  
+`member` / `member_info` 분리 조인이 필요하면 `Member.xml` · `MemberRow` 만 확장하면 된다.
 
-ctl 처럼 `member` + `member_info` 조인이 필요하면 `Member.xml` / `MemberRow` 만 확장하면 된다.
+## 스타터 범위
 
-## ctl 대비 생략 (의도)
-
-| ctl | mealkit |
+| 포함 | 미포함 |
 | --- | --- |
-| MyBatis + MariaDB | MyBatis + H2(기본) / MariaDB 프로필 |
-| war + 정적 SPA | jar API 서버 |
-| 비밀번호 재설정·메일 | 미포함 |
-| 메뉴 권한 | role claim 만 |
-| 대량 도메인 | auth / health / my |
+| MyBatis + H2(기본) / MariaDB 프로필 | 비밀번호 재설정·메일 |
+| jar API 서버 | WAR + 정적 SPA |
+| role claim | 메뉴 권한 체계 |
+| auth / health / my | 대량 도메인 모듈 |
 
 ## 새 API 추가 절차
 
@@ -97,15 +94,15 @@ ctl 처럼 `member` + `member_info` 조인이 필요하면 `Member.xml` / `Membe
 2. `service` — 실패는 `throw new CommonExceptions(ExceptionEnum.…)`
 3. `controller` — `DefaultRes.build(result)`
 4. 보호 API면 Security whitelist에 넣지 않음
-5. `docs` / Swagger group 필요 시 `SwaggerConfig`에 패키지 추가
+5. 필요 시 `SwaggerConfig`에 패키지 추가
 6. `MockMvc` 테스트 추가
 
-## 프론트 페어
+## 프론트 연동
 
-| 백엔드 | vite-ts-mealkit |
+| 백엔드 | 프론트 (`vite-ts-mealkit`) |
 | --- | --- |
 | `POST /api/auth/login` | `usePostAuthLogin` |
 | `POST /api/auth/token/refresh` | axios 401 interceptor |
 | `POST /api/auth/logout` | `usePostAuthLogout` |
 | `GET /api/health` | `useGetHealth` |
-| `GET /api/my` | 이후 RequireAuth 확장 |
+| `GET /api/my` | Bearer 보호 화면 |

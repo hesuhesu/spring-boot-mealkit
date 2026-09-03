@@ -3,8 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!--
-  ctl Auth.xml 의 signIn 을 스타터용으로 축소한 버전.
-  member + member_info 조인이 필요하면 SELECT / resultMap 만 확장하면 된다.
+  회원 조회 매퍼. member / member_info 조인이 필요하면 SELECT · resultMap 만 확장한다.
 -->
 <mapper namespace="com.mealkit.auth.mapper.MemberMapper">
 

@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import java.util.Optional;
 
 /**
- * 회원 MyBatis 매퍼 — ctl {@code AuthMapper#signIn} 에 대응.
+ * 회원 MyBatis 매퍼.
  * SQL은 {@code classpath:mapper/auth/Member.xml}
  */
 @Mapper

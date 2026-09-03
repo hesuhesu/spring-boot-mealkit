@@ -1,9 +1,9 @@
 # spring-boot-mealkit
 
-ctl_backend 패턴을 이식한 **Spring Boot 3 + Maven 스타터**.  
-`vite-ts-mealkit` 과 같은 응답 계약·인증 흐름으로 프론트와 바로 붙일 수 있다.
+**Spring Boot 3 + Maven** 백엔드 스타터.  
+JWT 인증, 공통 응답(`code=0000`), MyBatis 회원 저장소, `vite-ts-mealkit` 과 맞춘 API 계약을 포함한다.
 
-> Cursor/VS Code는 SVG 임베드를 차단한다. 미리보기는 아래 Mermaid · PNG 대신 [docs/assets](docs/assets/) 링크를 사용한다.
+![레이어](docs/assets/architecture-layers.svg)
 
 | 문서 | 내용 |
 | --- | --- |
@@ -29,23 +29,23 @@ ctl_backend 패턴을 이식한 **Spring Boot 3 + Maven 스타터**.
 
 ## 설계 방향
 
-### 푸는 문제
+### 목표
 
-- 프로젝트마다 Security·JWT·공통 응답을 처음부터 다시 짜는 일
-- 프론트(`code === '0000'`)와 백엔드 응답 형식이 어긋나는 일
-- access Bearer + refresh httpOnly 쿠키 패턴이 문서화되지 않은 일
-- DB 없이도 로그인·인가를 로컬에서 검증할 수단이 없는 일
+- Security·JWT·공통 응답을 바로 쓸 수 있는 API 서버 골격
+- 프론트와 동일한 성공 코드(`code === '0000'`) 계약
+- access Bearer + refresh httpOnly 쿠키 패턴
+- 로컬에서는 H2로, 운영에서는 MariaDB로 회원 조회
 
 ### 원칙
 
 1. **Controller는 얇게** — 검증·응답 래핑. 비즈니스는 Service.
 2. **실패는 `CommonExceptions(ExceptionEnum)`** — `GlobalExceptionHandler`가 `DefaultRes`로 통일.
-3. **성공은 `code=0000`** — HTTP 200만으로 성공을 판단하지 않는다 (프론트와 동일).
+3. **성공은 `code=0000`** — HTTP 200만으로 성공을 판단하지 않는다.
 4. **저장소는 포트로 분리** — `MemberStore`. 기본은 MyBatis(RDBMS), 옵션으로 인메모리 프로필.
 5. **`/api/**` 는 기본 인증** — login / refresh / logout / health / swagger만 공개.
-6. **vite-ts-mealkit 과 경로·쿠키 계약을 맞춤** — `mealkit_refreshToken`, `/api/auth/*`.
+6. **프론트 계약** — `mealkit_refreshToken`, `/api/auth/*` (`vite-ts-mealkit` 연동).
 
-ctl 대비 의도적 생략: 메일·비밀번호 재설정·메뉴 권한·war SPA. MyBatis+H2/MariaDB는 스타터에 포함.
+스타터 범위 밖: 메일, 비밀번호 재설정, 메뉴 권한, WAR+SPA 배포.
 
 ---
 
@@ -57,7 +57,7 @@ ctl 대비 의도적 생략: 메일·비밀번호 재설정·메뉴 권한·war 
 | Build | Maven (`jar`) |
 | Security | Spring Security (STATELESS) + JJWT |
 | Persistence | MyBatis + H2(`local`) / MariaDB(`mariadb`) |
-| API docs | springdoc-openapi (local/dev/default) |
+| API docs | springdoc-openapi |
 | Test | JUnit 5, MockMvc, spring-security-test |
 | 회원 | `MyBatisMemberStore` (기본) · `InMemoryMemberStore`(`inmemory`) |
 
@@ -99,7 +99,7 @@ flowchart TB
     SEC[security JWT]
     COM[common DefaultRes / Exception]
   end
-  FE[vite-ts-mealkit]
+  FE[Frontend]
   FE --> CTRL
   CTRL --> SVC
   SVC --> STORE
@@ -139,10 +139,13 @@ mvn spring-boot:run -Dspring-boot.run.profiles=mariadb       # MariaDB
 mvn spring-boot:run -Dspring-boot.run.profiles=inmemory      # 인메모리
 ```
 
-전환 주석은 `MemberStore`, `MyBatisMemberStore`, `InMemoryMemberStore`, `MealkitApplication` 에 있다.
+프로필·교체 포인트는 `MemberStore`, `MyBatisMemberStore`, `InMemoryMemberStore` 주석을 참고한다.
+
 ---
 
 ## 인증
+
+![인증 흐름](docs/assets/architecture-auth-flow.svg)
 
 ```mermaid
 sequenceDiagram
@@ -231,13 +234,13 @@ mvn test
 
 ## 프론트 연동
 
-`vite-ts-mealkit` `.env`:
+짝 프론트: `vite-ts-mealkit` (동일 API 계약을 따르는 클라이언트).
 
 ```env
 VITE_SERVER_URL=http://localhost:8080
 ```
 
-프론트는 `withCredentials: true` 로 refresh 쿠키를 보낸다. CORS `allowCredentials` + origin 화이트리스트가 이미 맞춰져 있다.
+프론트는 `withCredentials: true` 로 refresh 쿠키를 보낸다. CORS `allowCredentials` + origin 화이트리스트가 맞춰져 있다.
 
 ---
 
@@ -245,21 +248,21 @@ VITE_SERVER_URL=http://localhost:8080
 
 **도메인 API**
 
-1. `com.mealkit.{domain}` 패키지 (controller / service / dto)
+1. `com.mealkit.{domain}` 패키지 (controller / service / dto / mapper)
 2. 실패 → `CommonExceptions`
 3. 성공 → `DefaultRes.build`
 4. MockMvc 테스트
 5. Swagger group (선택)
 
-**DB (이미 포함 — 확장 시)**
+**DB**
 
 1. `db/schema.sql` · `mapper/**/*.xml` 도메인 테이블/쿼리 추가
 2. 필요 시 Flyway/Liquibase로 `spring.sql.init` 대체
-3. `MemberDataInitializer` 는 운영에서 끄거나 시드 정책 분리
+3. 운영에서는 `MemberDataInitializer` 끄거나 시드 정책 분리
 4. MariaDB: `spring.profiles.active=mariadb` + `MEALKIT_DB_*`
 
 **운영**
 
 1. `jwt.*` 비밀키 교체
 2. CORS production origin
-3. `spring.profiles.active=prod` 에서 swagger off (`@Profile` 조정)
+3. 운영 프로필에서 swagger off (`@Profile` 조정)

@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Profile;
         info = @Info(
                 title = "Mealkit API",
                 version = "0.0.1",
-                description = "spring-boot-mealkit — ctl_backend 패턴 스타터"
+                description = "spring-boot-mealkit API"
         ),
         security = @SecurityRequirement(name = "Authorization")
 )

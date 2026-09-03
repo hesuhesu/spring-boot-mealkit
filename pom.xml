@@ -16,7 +16,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>spring-boot-mealkit</name>
-    <description>ctl_backend 패턴 기반 Spring Boot + Maven 스타터</description>
+    <description>Spring Boot + Maven API 스타터 (JWT, MyBatis, DefaultRes)</description>
 
     <properties>
         <java.version>17</java.version>
@@ -76,7 +76,7 @@
             <scope>runtime</scope>
         </dependency>
 
-        <!-- RDBMS: ctl_backend 와 동일하게 MyBatis. 기본 프로필(local)은 H2, mariadb 프로필은 MariaDB -->
+        <!-- RDBMS: MyBatis. local=H2, mariadb=MariaDB -->
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
             <artifactId>mybatis-spring-boot-starter</artifactId>

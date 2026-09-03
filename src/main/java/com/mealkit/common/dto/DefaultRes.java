@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.http.ResponseEntity;
 
 /**
- * 공통 API 응답 래퍼 — vite-ts-mealkit / ctl 프론트는 data.code === '0000' 을 성공으로 본다.
+ * 공통 API 응답 래퍼 — 프론트는 data.code === '0000' 을 성공으로 본다.
  */
 @Data
 @AllArgsConstructor
