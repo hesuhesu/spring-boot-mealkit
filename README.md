@@ -3,7 +3,7 @@
 ctl_backend 패턴을 이식한 **Spring Boot 3 + Maven 스타터**.  
 `vite-ts-mealkit` 과 같은 응답 계약·인증 흐름으로 프론트와 바로 붙일 수 있다.
 
-![레이어](docs/assets/architecture-layers.svg)
+> Cursor/VS Code는 SVG 임베드를 차단한다. 미리보기는 아래 Mermaid · PNG 대신 [docs/assets](docs/assets/) 링크를 사용한다.
 
 | 문서 | 내용 |
 | --- | --- |
@@ -143,8 +143,6 @@ mvn spring-boot:run -Dspring-boot.run.profiles=inmemory      # 인메모리
 ---
 
 ## 인증
-
-![인증 흐름](docs/assets/architecture-auth-flow.svg)
 
 ```mermaid
 sequenceDiagram

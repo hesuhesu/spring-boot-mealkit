@@ -4,7 +4,7 @@ ctl_backend 에서 가져온 골격과, 스타터에서 의도적으로 줄인 �
 
 ## 한눈에
 
-![레이어](assets/architecture-layers.svg)
+> Cursor 미리보기는 SVG 임베드를 막는다. 파일: [architecture-layers.svg](assets/architecture-layers.svg)
 
 ```mermaid
 flowchart TB
@@ -50,7 +50,7 @@ com.mealkit
 
 ## 보안
 
-![인증](assets/architecture-auth-flow.svg)
+파일: [architecture-auth-flow.svg](assets/architecture-auth-flow.svg)
 
 | 항목 | 내용 |
 | --- | --- |
