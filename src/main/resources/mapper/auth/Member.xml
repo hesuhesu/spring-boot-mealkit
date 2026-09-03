@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+  ctl Auth.xml 의 signIn 을 스타터용으로 축소한 버전.
+  member + member_info 조인이 필요하면 SELECT / resultMap 만 확장하면 된다.
+-->
+<mapper namespace="com.mealkit.auth.mapper.MemberMapper">
+
+    <resultMap id="memberRowMap" type="com.mealkit.auth.model.MemberRow">
+        <id property="id" column="id"/>
+        <result property="loginId" column="login_id"/>
+        <result property="password" column="password"/>
+        <result property="role" column="role"/>
+        <result property="name" column="name"/>
+    </resultMap>
+
+    <select id="findByLoginId" resultMap="memberRowMap">
+        SELECT id, login_id, password, role, name
+        FROM member
+        WHERE login_id = #{loginId}
+    </select>
+
+    <select id="countAll" resultType="long">
+        SELECT COUNT(*) FROM member
+    </select>
+
+    <insert id="insert">
+        INSERT INTO member (login_id, password, role, name)
+        VALUES (#{loginId}, #{password}, #{role}, #{name})
+    </insert>
+</mapper>

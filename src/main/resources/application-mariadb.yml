@@ -1,0 +1,19 @@
+# MariaDB 프로필 예시
+# 실행: mvn spring-boot:run -Dspring-boot.run.profiles=mariadb
+# 또는 SPRING_PROFILES_ACTIVE=mariadb
+#
+# 환경 변수로 덮어쓰는 것을 권장한다 (비밀번호를 저장소에 넣지 말 것).
+spring:
+  datasource:
+    url: jdbc:mariadb://${MEALKIT_DB_HOST:localhost}:${MEALKIT_DB_PORT:3306}/${MEALKIT_DB_NAME:mealkit}
+    driver-class-name: org.mariadb.jdbc.Driver
+    username: ${MEALKIT_DB_USER:mealkit}
+    password: ${MEALKIT_DB_PASSWORD:mealkit}
+  sql:
+    init:
+      # 운영에서는 보통 Flyway/Liquibase. 최초 로컬 MariaDB 검증용으로만 always.
+      mode: ${MEALKIT_SQL_INIT_MODE:always}
+      schema-locations: classpath:db/schema.sql
+
+server:
+  port: ${SERVER_PORT:8080}

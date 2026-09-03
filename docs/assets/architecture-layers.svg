@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="440" viewBox="0 0 960 440" role="img">
+  <rect width="960" height="440" fill="#fafafa"/>
+  <text x="32" y="40" font-family="Segoe UI, sans-serif" font-size="20" font-weight="700" fill="#24303e">spring-boot-mealkit t´</text>
+  <text x="32" y="64" font-family="Segoe UI, sans-serif" font-size="13" fill="#666">Controller ’ Service ’ Store/Security ’ JWT / Qõ Ä}</text>
+
+  <rect x="80" y="100" width="800" height="52" rx="8" fill="#fff" stroke="#24303e" stroke-width="2"/>
+  <text x="480" y="132" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="15" font-weight="700" fill="#24303e">controller  Auth / Health / My</text>
+
+  <rect x="80" y="180" width="800" height="52" rx="8" fill="#e8f8f5" stroke="#3fc5ac" stroke-width="2"/>
+  <text x="480" y="212" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="15" font-weight="700" fill="#24303e">service  DˆÈ¤ · CommonExceptions</text>
+
+  <rect x="80" y="260" width="380" height="52" rx="8" fill="#24303e"/>
+  <text x="270" y="292" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="14" fill="#fff">MemberStore (xT¨¬’DB)</text>
+
+  <rect x="500" y="260" width="380" height="52" rx="8" fill="#24303e"/>
+  <text x="690" y="292" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="14" fill="#fff">JwtTokenProvider · Filter</text>
+
+  <rect x="80" y="340" width="800" height="52" rx="8" fill="#f7f4ef" stroke="#d8d4cc"/>
+  <text x="480" y="372" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="14" fill="#24303e">DefaultRes code=0000 · vite-ts-mealkit @ Ù| Ä}</text>
+</svg>

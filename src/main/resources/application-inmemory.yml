@@ -1,0 +1,11 @@
+# 인메모리 회원 프로필 — DataSource/MyBatis 자동설정 제외
+# 실행: mvn spring-boot:run -Dspring-boot.run.profiles=inmemory
+spring:
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration
+      - org.mybatis.spring.boot.autoconfigure.MybatisAutoConfiguration
+
+server:
+  port: 8080

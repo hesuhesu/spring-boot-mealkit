@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="320" viewBox="0 0 960 320" role="img">
+  <rect width="960" height="320" fill="#fafafa"/>
+  <text x="32" y="40" font-family="Segoe UI, sans-serif" font-size="20" font-weight="700" fill="#24303e">xù PÑ</text>
+  <rect x="40" y="90" width="160" height="48" rx="8" fill="#fff" stroke="#24303e" stroke-width="2"/>
+  <text x="120" y="120" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="13" fill="#24303e">POST /login</text>
+  <rect x="240" y="90" width="160" height="48" rx="8" fill="#e8f8f5" stroke="#3fc5ac" stroke-width="2"/>
+  <text x="320" y="120" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="13" fill="#24303e">AuthService</text>
+  <rect x="440" y="90" width="200" height="48" rx="8" fill="#24303e"/>
+  <text x="540" y="120" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="12" fill="#fff">JWT access + refresh</text>
+  <rect x="680" y="90" width="240" height="48" rx="8" fill="#3fc5ac"/>
+  <text x="800" y="120" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="12" fill="#fff">body + httpOnly cookie</text>
+  <rect x="40" y="180" width="880" height="100" rx="10" fill="#fff" stroke="#d8d4cc"/>
+  <text x="60" y="220" font-family="Consolas, monospace" font-size="13" fill="#555">Authorization: Bearer {accessToken}</text>
+  <text x="60" y="250" font-family="Consolas, monospace" font-size="13" fill="#555">Cookie: mealkit_refreshToken=... (withCredentials)</text>
+</svg>

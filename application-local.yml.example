@@ -1,0 +1,13 @@
+# 예시 — 복사 후 application-local.yml 로 사용하거나 IDE Run Configuration 에 주입
+jwt:
+  secret: mealkit-dev-secret-key-change-me-32bytes!!
+  expiration: 3600000
+  refresh-secret: mealkit-dev-refresh-secret-change-me-32b
+  refresh-expiration: 604800000
+
+mealkit:
+  cors:
+    allowed-origins:
+      - http://localhost:5173
+      - http://localhost:5177
+      - http://127.0.0.1:5173

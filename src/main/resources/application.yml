@@ -1,0 +1,41 @@
+spring:
+  application:
+    name: spring-boot-mealkit
+  profiles:
+    # local=H2 RDBMS(기본) | mariadb=실DB | inmemory=인메모리(데모)
+    active: local
+
+server:
+  port: 8080
+
+# MyBatis — ctl_backend 와 동일하게 mapper XML + camelCase
+mybatis:
+  mapper-locations: classpath:/mapper/**/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+
+jwt:
+  # HS256 키는 충분히 길어야 함 (32바이트+)
+  secret: mealkit-dev-secret-key-change-me-32bytes!!
+  expiration: 3600000
+  refresh-secret: mealkit-dev-refresh-secret-change-me-32b
+  refresh-expiration: 604800000
+
+mealkit:
+  cors:
+    allowed-origins:
+      - http://localhost:5173
+      - http://localhost:5177
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+
+logging:
+  level:
+    root: INFO
+    com.mealkit: DEBUG
+    org.springframework.security: INFO
+    com.mealkit.auth.mapper: DEBUG
